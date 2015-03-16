@@ -1,0 +1,11 @@
+{
+  "require": {
+    "php": ">=5.4",
+    "vrana/notorm": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Model\\": "model/"
+    }
+  }
+}

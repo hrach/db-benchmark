@@ -1,7 +1,0 @@
-{
-    "description": "Benchmark for Lean Mapper",
-    "require": {
-        "php": ">= 5.3.1",
-        "tharos/leanmapper": "2.1.*"
-    }
-}
