@@ -34,11 +34,13 @@ before_script:
     - cd ../
 
 script:
-    - echo -e "First run (create cache files)" > first.log
-    - sh testall > first.log | cat first.log
+    - echo -e "First run (create cache files)" >> first.log
+    - sh testall >> first.log
+    - cat first.log
 
-    - echo "Second run (using cache)" > second.log
-    - sh testall > second.log | cat second.log
+    - echo "Second run (using cache)" >> second.log
+    - sh testall >> second.log
+    - cat second.log
 
 after_success:
     - git clone https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs
@@ -55,6 +57,6 @@ after_success:
     - git config --global user.email "${GH_USER_EMAIL}"
 
     - git add logs/${now}.log
-    - git commit -m "Update ${now}"
+    - git commit -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION})"
 
     - git push --all
