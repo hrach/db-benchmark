@@ -40,7 +40,7 @@ script:
     - cat second.log
 
 after_success:
-    - git clone -q https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs  >> git-logs/gitlog.log
+    - git clone -q https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs  > /dev/null
 
     - now=$(date +"%Y%m%d")
     - cat first.log >> git-logs/logs/${now}.log
@@ -53,7 +53,7 @@ after_success:
     - git config --global user.name "${GH_USER_NAME}"
     - git config --global user.email "${GH_USER_EMAIL}"
 
-    - git add logs/${now}.log >> gitlog.log
-    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]" >> gitlog.log
+    - git add logs/${now}.log > /dev/null
+    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]" > /dev/null
 
-    - git push -q --all >> gitlog.log
+    - git push -q --all > /dev/null
