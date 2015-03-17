@@ -25,6 +25,9 @@ before_script:
     # Extract data
     - tar -xjf employees_db-full-1.0.6.tar.bz2
 
+    # MySQL name timezone
+    - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
+
     # Import to MySQL
     - cd employees_db
     - mysql -t < employees.sql

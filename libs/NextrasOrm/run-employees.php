@@ -28,7 +28,7 @@ $context = new Context($connection, $structure, $conventions, Bootstrap::$config
 $startTime = -microtime(TRUE);
 ob_start();
 
-$model = new SimpleModelFactory(
+$modelFactory = new SimpleModelFactory(
     $cacheStorage,
     [
         'employees' => new Model\EmployeesRepository(new Model\EmployeesMapper($context)),
@@ -36,6 +36,7 @@ $model = new SimpleModelFactory(
         'departments' => new Model\DepartmentsRepository(new Model\DepartmentsMapper($context)),
     ]
 );
+$model = $modelFactory->create();
 
 $employees = $model->employees->findOverview(Bootstrap::$config['limit']);
 
