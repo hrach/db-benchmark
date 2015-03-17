@@ -40,7 +40,11 @@ script:
     - cat second.log
 
 after_success:
-    - git clone -q https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs  > /dev/null
+    - php -r "echo base64_decode('${GH_PRIVATEKEY_b64}');" > ~/.ssh/id_rsa
+    - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+    - chmod 600 ~/.ssh/id_rsa
+
+    - git clone -q git@github.com:minetro/db-benchmark-logs.git git-logs
 
     - now=$(date +"%Y%m%d")
     - cat first.log >> git-logs/logs/${now}.log
@@ -53,7 +57,7 @@ after_success:
     - git config --global user.name "${GH_USER_NAME}"
     - git config --global user.email "${GH_USER_EMAIL}"
 
-    - git add logs/${now}.log > /dev/null
-    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]" > /dev/null
+    - git add logs/${now}.log
+    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]"
 
-    - git push -q --all > /dev/null
+    - git push -q --all
