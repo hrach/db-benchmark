@@ -34,11 +34,11 @@ before_script:
     - cd ../
 
 script:
-    - echo "First run (create cache files)"
-    - sh testall > first.log
+    - echo -e "First run (create cache files)" > first.log
+    - sh testall > first.log | cat first.log
 
-    - echo "Second run (using cache)"
-    - sh testall > second.log
+    - echo "Second run (using cache)" > second.log
+    - sh testall > second.log | cat second.log
 
 after_success:
     - git clone https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs
