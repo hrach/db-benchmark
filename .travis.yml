@@ -19,9 +19,6 @@ before_script:
     # Install all dependecies
     - sh installall
 
-    # Create MySQL database
-    - mysql -e 'CREATE DATABASE benchmark;'
-
     # Download Employees Sample Database
     - wget https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2
 
@@ -43,7 +40,7 @@ script:
     - cat second.log
 
 after_success:
-    - git clone -q https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs
+    - git clone -q https://${GH_USER}:${GH_TOKEN}@github.com/${GH_REPO} git-logs  >> git-logs/gitlog.log
 
     - now=$(date +"%Y%m%d")
     - cat first.log >> git-logs/logs/${now}.log
@@ -56,7 +53,7 @@ after_success:
     - git config --global user.name "${GH_USER_NAME}"
     - git config --global user.email "${GH_USER_EMAIL}"
 
-    - git add -q logs/${now}.log
-    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]"
+    - git add logs/${now}.log >> gitlog.log
+    - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]" >> gitlog.log
 
-    - git push -q --all
+    - git push -q --all >> gitlog.log
