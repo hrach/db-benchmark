@@ -49,11 +49,15 @@ after_success:
 
     - git clone -q git@github.com:minetro/db-benchmark-logs.git git-logs
 
-    - now=$(date +"%Y%m%d")
-    - cat first.log >> git-logs/logs/${now}.log
-    - echo -e "\n" >> git-logs/logs/${now}.log
-    - cat second.log >> git-logs/logs/${now}.log
-    - echo -e "\n\n" >> git-logs/logs/${now}.log
+
+    - NOW=$(date +"%Y%m%d")
+    - FILE=git-logs/logs/${NOW}.log
+
+    - sh info >> ${FILE}
+    - cat first.log >> ${FILE}
+    - echo -e "\n" >> ${FILE}
+    - cat second.log >> ${FILE}
+    - echo -e "\n\n" >> ${FILE}
 
     - cd git-logs
 
