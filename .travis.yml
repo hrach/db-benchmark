@@ -64,7 +64,7 @@ after_success:
     - git config --global user.name "${GH_USER_NAME}"
     - git config --global user.email "${GH_USER_EMAIL}"
 
-    - git add logs/${now}.log
+    - git add logs/*.log
     - git commit -q -m "Update ${now} (PHP ${TRAVIS_PHP_VERSION}) [JOB ${TRAVIS_JOB_NUMBER}]"
 
     - git push -q --all

@@ -33,7 +33,7 @@ class Employee extends YetORM\Entity
 	function getSalaries()
 	{
 		$selection = $this->record->related('salaries', 'emp_no');
-		return new YetORM\EntityCollection($selection, Salary::class);
+		return new YetORM\EntityCollection($selection, 'Model\Entity\Salary');
 	}
 
 
@@ -41,7 +41,7 @@ class Employee extends YetORM\Entity
 	function getDepartments()
 	{
 		$selection = $this->record->related('dept_emp', 'emp_no');
-		return new YetORM\EntityCollection($selection, Department::class, 'departments', 'dept_no');
+		return new YetORM\EntityCollection($selection, 'Model\Entity\Department', 'departments', 'dept_no');
 	}
 
 }

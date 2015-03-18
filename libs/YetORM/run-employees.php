@@ -27,7 +27,7 @@ $startTime = -microtime(TRUE);
 ob_start();
 $employees = new EmployeeRepository($context);
 
-foreach ($employees->findAll()->limit(Bootstrap::$config['limi']) as $employee) {
+foreach ($employees->findAll()->limit(Bootstrap::$config['limit']) as $employee) {
     echo $employee->getFirstName(), ' ', $employee->getLastName(), ' (', $employee->getEmpNo(), ")\n";
 
     echo 'Salaries:', "\n";
@@ -44,4 +44,4 @@ foreach ($employees->findAll()->limit(Bootstrap::$config['limi']) as $employee) 
 ob_end_clean();
 $endTime = microtime(TRUE);
 
-Bootstrap::result('Nextras\Orm', 'Nextras\Orm: 1.0.0-beta*', $startTime, $endTime);
+Bootstrap::result('YetORM', 'YetORM: ~8.0', $startTime, $endTime);
