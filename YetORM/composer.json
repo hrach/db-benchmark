@@ -1,0 +1,7 @@
+{
+	"description": "Benchmark for YetORM",
+	"require": {
+		"php": "~5.4",
+		"uestla/yetorm": "8.*"
+	}
+}
