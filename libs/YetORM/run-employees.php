@@ -1,12 +1,12 @@
 <?php
 
+use Model\Repository\EmployeeRepository;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Database\Connection;
 use Nette\Database\Context;
 use Nette\Database\Conventions\DiscoveredConventions;
 use Nette\Database\Structure;
 use Nette\Framework;
-use Nextras\Orm\Model\SimpleModelFactory;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -14,7 +14,6 @@ Bootstrap::init();
 Bootstrap::check(__DIR__);
 
 $cacheStorage = new FileStorage(__DIR__ . '/temp');
-
 $connection = new Connection(
     Bootstrap::$config['db']['driver'] . ':dbname=' . Bootstrap::$config['db']['dbname'],
     Bootstrap::$config['db']['user'],
@@ -24,31 +23,21 @@ $structure = new Structure($connection, $cacheStorage);
 $conventions = new DiscoveredConventions($structure);
 $context = new Context($connection, $structure, $conventions, Bootstrap::$config['cache'] ? $cacheStorage : NULL);
 
-
 $startTime = -microtime(TRUE);
 ob_start();
+$employees = new EmployeeRepository($context);
 
-$modelFactory = new SimpleModelFactory(
-    $cacheStorage,
-    [
-        'employees' => new Model\EmployeesRepository(new Model\EmployeesMapper($context)),
-        'salarieys' => new Model\SalariesRepository(new Model\SalariesMapper($context)),
-        'departments' => new Model\DepartmentsRepository(new Model\DepartmentsMapper($context)),
-    ]
-);
-$model = $modelFactory->create();
+foreach ($employees->findAll()->limit(Bootstrap::$config['limi']) as $employee) {
+    echo $employee->getFirstName(), ' ', $employee->getLastName(), ' (', $employee->getEmpNo(), ")\n";
 
-$employees = $model->employees->findOverview(Bootstrap::$config['limit']);
-
-foreach ($employees as $employee) {
-    echo "$employee->firstName $employee->lastName ($employee->id)\n";
-    echo "Salaries:\n";
-    foreach ($employee->salaries as $salary) {
-        echo "-", $salary->salary, "\n";
+    echo 'Salaries:', "\n";
+    foreach ($employee->getSalaries() as $salary) {
+        echo $salary->getSalary(), "\n";
     }
-    echo "Departments:\n";
-    foreach ($employee->departments as $department) {
-        echo "-", $department->name, "\n";
+
+    echo 'Departments:', "\n";
+    foreach ($employee->getDepartments() as $department) {
+        echo $department->getName(), "\n";
     }
 }
 
