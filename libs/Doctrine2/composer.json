@@ -1,8 +1,8 @@
 {
   "require": {
     "php": ">= 5.4",
-    "nette/utils": "~2.2@rc",
-    "doctrine/orm": "~2.3.2"
+    "nette/utils": "~2.3.0",
+    "doctrine/orm": "~2.4.0"
   },
   "autoload": {
     "psr-4": {
