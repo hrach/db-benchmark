@@ -30,10 +30,6 @@ $structure = new Structure($connection, $cacheStorage);
 $conventions = new DiscoveredConventions($structure);
 $context = new Context($connection, $structure, $conventions, Bootstrap::$config['cache'] ? $cacheStorage : NULL);
 
-
-$startTime = -microtime(TRUE);
-ob_start();
-
 $modelFactory = new SimpleModelFactory(
     $cacheStorage,
     [
@@ -42,8 +38,11 @@ $modelFactory = new SimpleModelFactory(
         'departments' => new DepartmentsRepository(new DepartmentsMapper($context)),
     ]
 );
-$model = $modelFactory->create();
 
+$startTime = -microtime(TRUE);
+ob_start();
+
+$model = $modelFactory->create();
 $employees = $model->employees->findOverview(Bootstrap::$config['limit']);
 
 foreach ($employees as $employee) {

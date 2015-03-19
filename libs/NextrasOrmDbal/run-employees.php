@@ -24,11 +24,12 @@ $connection = new Connection([
     'dbname' => Bootstrap::$config['db']['dbname'],
 ]);
 
-$staticLoader = new SimpleModelFactory($cacheStorage, [
-    'employees' => new EmployeesRepository(new EmployeesMapper($connection, $cacheStorage)),
-    'salarieys' => new SalariesRepository(new SalariesMapper($connection, $cacheStorage)),
-    'departments' => new DepartmentsRepository(new DepartmentsMapper($connection, $cacheStorage)),
+$staticLoader = new SimpleModelFactory(Bootstrap::$config['cache'] ? $cacheStorage : NULL, [
+    'employees' => new EmployeesRepository(new EmployeesMapper($connection, Bootstrap::$config['cache'] ? $cacheStorage : NULL)),
+    'salarieys' => new SalariesRepository(new SalariesMapper($connection, Bootstrap::$config['cache'] ? $cacheStorage : NULL)),
+    'departments' => new DepartmentsRepository(new DepartmentsMapper($connection, Bootstrap::$config['cache'] ? $cacheStorage : NULL)),
 ]);
+
 
 $startTime = -microtime(TRUE);
 ob_start();
