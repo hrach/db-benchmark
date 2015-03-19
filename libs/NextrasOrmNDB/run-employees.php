@@ -1,5 +1,11 @@
 <?php
 
+use Model\DepartmentsMapper;
+use Model\DepartmentsRepository;
+use Model\EmployeesMapper;
+use Model\EmployeesRepository;
+use Model\SalariesMapper;
+use Model\SalariesRepository;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Database\Connection;
 use Nette\Database\Context;
@@ -31,9 +37,9 @@ ob_start();
 $modelFactory = new SimpleModelFactory(
     $cacheStorage,
     [
-        'employees' => new Model\EmployeesRepository(new Model\EmployeesMapper($context)),
-        'salarieys' => new Model\SalariesRepository(new Model\SalariesMapper($context)),
-        'departments' => new Model\DepartmentsRepository(new Model\DepartmentsMapper($context)),
+        'employees' => new EmployeesRepository(new EmployeesMapper($context)),
+        'salarieys' => new SalariesRepository(new SalariesMapper($context)),
+        'departments' => new DepartmentsRepository(new DepartmentsMapper($context)),
     ]
 );
 $model = $modelFactory->create();

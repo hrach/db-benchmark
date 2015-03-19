@@ -1,5 +1,12 @@
 <?php
 
+use Model\DepartmentsMapper;
+use Model\DepartmentsRepository;
+use Model\EmployeesMapper;
+use Model\EmployeesRepository;
+use Model\SalariesMapper;
+use Model\SalariesRepository;
+use Nette\Caching\Storages\FileStorage;
 use Nextras\Dbal\Connection;
 use Nextras\Orm\Model\SimpleModelFactory;
 
@@ -8,29 +15,25 @@ require_once __DIR__ . '/../../bootstrap.php';
 Bootstrap::init();
 Bootstrap::check(__DIR__);
 
-$connection = new Connection(
-    Bootstrap::$config['db']['driver'] . ':dbname=' . Bootstrap::$config['db']['dbname'],
-    Bootstrap::$config['db']['user'],
-    Bootstrap::$config['db']['password']
-);
-$structure = new Structure($connection, $cacheStorage);
-$conventions = new DiscoveredConventions($structure);
-$context = new Context($connection, $structure, $conventions, Bootstrap::$config['cache'] ? $cacheStorage : NULL);
+$cacheStorage = new FileStorage(__DIR__ . '/temp');
 
+$connection = new Connection([
+    'driver' => Bootstrap::$config['db']['driver'],
+    'username' => Bootstrap::$config['db']['user'],
+    'password' => Bootstrap::$config['db']['password'],
+    'dbname' => Bootstrap::$config['db']['dbname'],
+]);
+
+$staticLoader = new SimpleModelFactory($cacheStorage, [
+    'employees' => new EmployeesRepository(new EmployeesMapper($connection, $cacheStorage)),
+    'salarieys' => new SalariesRepository(new SalariesMapper($connection, $cacheStorage)),
+    'departments' => new DepartmentsRepository(new DepartmentsMapper($connection, $cacheStorage)),
+]);
 
 $startTime = -microtime(TRUE);
 ob_start();
 
-$modelFactory = new SimpleModelFactory(
-    $cacheStorage,
-    [
-        'employees' => new Model\EmployeesRepository(new Model\EmployeesMapper($context)),
-        'salarieys' => new Model\SalariesRepository(new Model\SalariesMapper($context)),
-        'departments' => new Model\DepartmentsRepository(new Model\DepartmentsMapper($context)),
-    ]
-);
-$model = $modelFactory->create();
-
+$model = $staticLoader->create();
 $employees = $model->employees->findOverview(Bootstrap::$config['limit']);
 
 foreach ($employees as $employee) {

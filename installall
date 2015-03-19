@@ -20,8 +20,8 @@ composer update -d "$SRC_DIR/NDB2.4/" $COMPOSER_OPTIONS
 echo "# Update $SRC_DIR/NextrasOrmNDB"
 composer update -d "$SRC_DIR/NextrasOrmNDB/" $COMPOSER_OPTIONS
 
-#echo "# Update $SRC_DIR/NextrasOrmDbal"
-#composer update -d "$SRC_DIR/NextrasOrmDbal/" $COMPOSER_OPTIONS
+echo "# Update $SRC_DIR/NextrasOrmDbal"
+composer update -d "$SRC_DIR/NextrasOrmDbal/" $COMPOSER_OPTIONS
 
 echo "# Update $SRC_DIR/YetORM"
 composer update -d "$SRC_DIR/YetORM/" $COMPOSER_OPTIONS
